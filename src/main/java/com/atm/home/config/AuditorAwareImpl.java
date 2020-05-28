@@ -10,7 +10,6 @@ public class AuditorAwareImpl implements AuditorAware<String> {
     public Optional<String> getCurrentAuditor() {
         return Optional.of("Abhishek");
         		
-        		// Can use Spring Security to return currently logged in user
         // return ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()
     }
 }

@@ -1,7 +1,5 @@
 package com.atm.home.model;
 
-import static javax.persistence.GenerationType.SEQUENCE;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,31 +11,33 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 
 import com.atm.home.enums.AccountStatus;
 import com.atm.home.enums.AccountType;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@EqualsAndHashCode
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class User extends Auditable<String> {
 	
 	@Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "atm_seq")
-    @SequenceGenerator(name = "atm_seq", sequenceName = "atm_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer id;
 	
@@ -54,18 +54,19 @@ public class User extends Auditable<String> {
 	@Enumerated(EnumType.STRING)
 	private AccountType accountTypye;
 	
-	//One to Many 
-	@OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-	private Set<Offer> offers = new HashSet<Offer>();
-	
+
 	@Column
 	@Enumerated(EnumType.STRING)
 	@NotNull
 	private AccountStatus accountStatus;
 	
+	//One to Many 
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+	private Set<Offer> offers = new HashSet<Offer>();
+	
+	
 	//Many to Many 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinTable(name = "user_beneficiary",
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "beneficiary_id"))

@@ -2,12 +2,16 @@ package com.atm.home.model;
 
 import javax.persistence.Embeddable;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Embeddable
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 public class Address {
 	
 	String city ;

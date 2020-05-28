@@ -1,28 +1,31 @@
 package com.atm.home.model;
 
-import static javax.persistence.GenerationType.SEQUENCE;
-
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Beneficiary extends Auditable<String> {
 	
 	@Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "atm_seq")
-    @SequenceGenerator(name = "atm_seq", sequenceName = "atm_seq", allocationSize = 1)
+   // @SequenceGenerator(name = "atm_seq", sequenceName = "atm_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer id;
 	
@@ -39,7 +42,7 @@ public class Beneficiary extends Auditable<String> {
 	@Column
 	private String ifscCode;
 	
-	@ManyToMany(mappedBy = "beneficiary")
+	@ManyToMany(mappedBy = "beneficiary",fetch = FetchType.LAZY)
 	private Set<User> users = new HashSet<>();
 	
 	

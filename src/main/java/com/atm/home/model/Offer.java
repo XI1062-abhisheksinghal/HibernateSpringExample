@@ -1,30 +1,32 @@
 package com.atm.home.model;
 
-import static javax.persistence.GenerationType.SEQUENCE;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 
 import com.atm.home.enums.OfferStatus;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Offer extends Auditable<String> {
 	
 	@Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "atm_seq")
-    @SequenceGenerator(name = "atm_seq", sequenceName = "atm_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer id;
 	
@@ -36,8 +38,10 @@ public class Offer extends Auditable<String> {
 	@Enumerated(EnumType.STRING)
 	private OfferStatus offerStatus;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "user_id", referencedColumnName = "id",updatable = true, insertable = true)
 	private User user;
+	
 	
 	
 }
