@@ -1,17 +1,18 @@
 package com.atm.home.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import static javax.persistence.GenerationType.SEQUENCE;
-
-import java.util.Set;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "Credentials")
@@ -22,8 +23,6 @@ import javax.persistence.*;
 public class Credentials  extends Auditable<String> {
 
 	@Id
-   // @GeneratedValue(strategy = SEQUENCE, generator = "atm_seq")
-   // @SequenceGenerator(name = "atm_seq", sequenceName = "atm_seq", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
 	private Integer id;

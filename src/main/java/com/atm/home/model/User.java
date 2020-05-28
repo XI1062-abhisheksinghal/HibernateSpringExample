@@ -60,7 +60,7 @@ public class User extends Auditable<String> {
 	@NotNull
 	private AccountStatus accountStatus;
 	
-	//One to Many 
+	//One to Many using third table user_offer
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_offer",
     joinColumns = {@JoinColumn(name = "user_id")},
@@ -68,7 +68,7 @@ public class User extends Auditable<String> {
 	private Set<Offer> offers = new HashSet<Offer>();
 	
 	
-	//Many to Many 
+	//Many to Many using third table user_beneficiary
 	@ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinTable(name = "user_beneficiary",
         joinColumns = @JoinColumn(name = "user_id"),
