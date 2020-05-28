@@ -61,7 +61,10 @@ public class User extends Auditable<String> {
 	private AccountStatus accountStatus;
 	
 	//One to Many 
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "user_offer",
+    joinColumns = {@JoinColumn(name = "user_id")},
+    inverseJoinColumns = {@JoinColumn(name = "offer_id")})
 	private Set<Offer> offers = new HashSet<Offer>();
 	
 	

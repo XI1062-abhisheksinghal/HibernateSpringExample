@@ -55,12 +55,13 @@ public class UserController {
 	@GetMapping
 	public ResponseEntity<List<BeneficiaryResponse>> getAllBeneficiary(@PathVariable String userName){
 		
-		BeneficiaryResponse br = new BeneficiaryResponse();
+		
 		List<BeneficiaryResponse> ls = new ArrayList<BeneficiaryResponse>();
 		User user =userRepo.findByName(userName);
-		
+		 System.out.println("======"+user.getOffers());
 		Set<Beneficiary> set =user.getBeneficiary();
 		for(Beneficiary b :set) {
+			BeneficiaryResponse br = new BeneficiaryResponse();
 			br.setAccountNumber(b.getAccountNumber());
 			br.setBankName(b.getBankName());
 			br.setBeneficiaryName(b.getBeneficiaryName());

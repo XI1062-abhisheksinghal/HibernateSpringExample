@@ -24,7 +24,6 @@ import lombok.Setter;
 public class Beneficiary extends Auditable<String> {
 	
 	@Id
-   // @SequenceGenerator(name = "atm_seq", sequenceName = "atm_seq", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer id;
