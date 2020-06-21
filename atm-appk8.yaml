@@ -1,0 +1,64 @@
+apiVersion: apps/v1           # API version
+kind: Deployment              # Type of kubernetes resource
+metadata:
+  name: atm-app-server    # Name of the kubernetes resource
+  labels:                     # Labels that will be applied to this resource
+    app: atm-app-server
+spec:
+  replicas: 1                 # No. of replicas/pods to run in this deployment
+  selector:
+    matchLabels:              # The deployment applies to any pods mayching the specified labels
+      app: atm-app-server
+  template:                   # Template for creating the pods in this deployment
+    metadata:
+      labels:                 # Labels that will be applied to each Pod in this deployment
+        app: atm-app-server
+    spec:                     # Spec for the containers that will be run in the Pods
+      containers:
+      - name: atm-app-server
+        image: abhi90engg/atm:v2
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: http
+            containerPort: 4000 # The port that the container exposes
+        resources:
+          limits:
+            cpu: 0.2
+            memory: "200Mi"
+        env:                  # Environment variables supplied to the Pod
+        - name: MYSQL_USER # Name of the environment variable
+          valueFrom:          # Get the value of environment variable from kubernetes secrets
+            secretKeyRef:
+              name: mysql-user-name
+              key: username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-pass
+              key: password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysql-db-url
+              key: url
+        - name: MYSQL_JAR
+          valueFrom:
+            secretKeyRef:
+              name: mysql-jdbc-jar
+              key: jdbcjar
+        
+---
+apiVersion: v1                # API version
+kind: Service                 # Type of the kubernetes resource
+metadata:                     
+  name: atm-app-server    # Name of the kubernetes resource
+  labels:                     # Labels that will be applied to this resource
+    app: atm-app-server
+spec:                         
+  type: NodePort              # The service will be exposed by opening a Port on each node and proxying it. 
+  selector:
+    app: atm-app-server   # The service exposes Pods with label `app=polling-app-server`
+  ports:                      # Forward incoming connections on port 8080 to the target port 8080
+  - name: http
+    port: 4000
+    targetPort: 4000
